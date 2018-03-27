@@ -1,0 +1,21 @@
+module CareerPoint; 
+-- TODO: Add AQL content here 
+
+create view DescriptionStartIndicator as
+extract
+	dictionary 'DescriptionStartIndicator' on detaggedDoc.text as Start
+from detaggedDoc;
+
+create view DescriptionEndIndicator as
+extract
+	dictionary 'DescriptionEndIndicator' on detaggedDoc.text as End
+from detaggedDoc;
+
+create view JobDescription as
+	select SpanBetween(R.Start, D.End) as job_description
+from DescriptionStartIndicator R, DescriptionEndIndicator D ;
+
+--output view DescriptionStartIndicator;
+--output view DescriptionEndIndicator;
+
+output view JobDescription;--Working

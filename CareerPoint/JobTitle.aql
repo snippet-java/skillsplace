@@ -1,0 +1,29 @@
+module CareerPoint; 
+-- TODO: Add AQL content here 
+
+create view JobTitleStartIndicator as
+extract
+	dictionary 'JobTitleStartIndicator' on Document.text as Start
+from Document;
+
+create view JobTitleEndIndicator as
+extract
+	dictionary 'JobTitleEndIndicator' on Document.text as End
+from Document;
+
+create view JobTitleSpan as
+	select SpanBetween(R.Start, D.End) as Jobtitle
+from JobTitleStartIndicator R, JobTitleEndIndicator D ;
+
+--create view Jobtitle as
+  --extract regex /^[A-Za-z0-9\s]+/
+	--extract regex /^(.*?)\sJobs|Internships/
+	--with flags 'DOTALL'
+    --on C.job_title
+    --return group 0 as Jobtitle
+	--from JobTitleSpan C;
+
+  
+-- Export the final view and dictionaries so that they can
+-- be referenced in other modules
+output view JobTitleSpan;--Working

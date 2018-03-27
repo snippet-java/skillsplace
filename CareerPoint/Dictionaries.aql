@@ -1,0 +1,36 @@
+module CareerPoint; 
+-- TODO: Add AQL content here 
+
+create dictionary SkillsAlias
+from file 'Dictionaries/SkillsAlias.Dict'
+	with language as 'en'
+;
+
+create dictionary SkillsCanonical
+from file 'Dictionaries/SkillsCanonical.Dict'
+	with language as 'en'
+;
+
+create dictionary DescriptionStartIndicator 
+	with case insensitive
+	as
+	('Responsibilities')
+	;
+	
+create dictionary DescriptionEndIndicator 
+	with case insensitive
+	as
+	('How to Apply')
+	;
+	
+create dictionary JobTitleStartIndicator 
+	with case insensitive
+	as
+	('<h1>')
+	;
+	
+create dictionary JobTitleEndIndicator 
+	with case insensitive
+	as
+	('</h1>')
+	;

@@ -1,0 +1,35 @@
+module CareerPoint; 
+-- TODO: Add AQL content here 
+
+detag Document.text as detaggedDoc
+detect content_type always;
+
+create view SkillsAlias as
+extract
+	dictionary 'SkillsAlias' on d.text as SkillsAlias
+from detaggedDoc d;
+
+create view SkillsCanonical as
+extract
+	dictionary 'SkillsCanonical' on d as SkillsCanonical
+from detaggedDoc d;
+
+create view SingleSkills as
+select skill.SkillsAlias as Skills
+from SkillsAlias skill;
+
+create view CanonicalSkills as
+select std.Canonical as MappedSkills
+from SkillsAlias L, SkillsNames std
+where Equals(GetText(L.SkillsAlias),GetText(std.Alias));
+
+create view SingleCanonicalSkills as
+select skill.MappedSkills as Skills
+from CanonicalSkills skill
+--duplicate handling
+consolidate on skill.MappedSkills using 'ExactMatch';
+
+
+output view SingleCanonicalSkills;
+
+--output view CanonicalSkills;
